@@ -7,6 +7,8 @@ app = Flask(__name__)
 
 logs = []
 
+ip_count= {}
+
 with open("access.log", "r") as f:
 
     for line in f:
@@ -19,6 +21,13 @@ with open("access.log", "r") as f:
 
             if attack:
 
+                ip=parsed["ip"]
+
+                if ip in ip_count:
+                    ip_count[ip]+=1
+                else:
+                    ip_count[ip]=1
+
                 parsed["attack"] = attack
 
                 logs.append(parsed)
@@ -26,7 +35,7 @@ with open("access.log", "r") as f:
 @app.route("/")
 def index():
 
-    return render_template("index.html", logs=logs)
+    return render_template("index.html", logs=logs,ip_count=ip_count)
 
 if __name__ == "__main__":
     app.run(debug=True)
