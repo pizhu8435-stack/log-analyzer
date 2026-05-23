@@ -10,20 +10,30 @@
     <h1>攻击日志</h1>
 
     <table border="1">
-        <tr>
-            <th>攻击类型</th>
-            <th>日志内容</th>
-        </tr>   
 
-        {% for log in logs %}
+<tr>
+    <th>IP</th>
+    <th>Method</th>
+    <th>URL</th>
+    <th>Status</th>
+    <th>User-Agent</th>
+    <th>Attack</th>
+</tr>
 
-        <tr>
-            <td>{{ log.type }}</td>
-            <td>{{ log.content }}</td>
-        </tr>
+{% for log in logs %}
 
-        {% endfor %}
-    </table>
+<tr>
+    <td>{{ log.ip }}</td>
+    <td>{{ log.method }}</td>
+    <td>{{ log.url }}</td>
+    <td>{{ log.status }}</td>
+    <td>{{ log.user_agent }}</td>
+    <td>{{ log.attack }}</td>
+</tr>
+
+{% endfor %}
+
+</table>
     
 </body>
 </html>
