@@ -1,7 +1,8 @@
 from flask import Flask, render_template
 
 from parser import parse_log
-from detector import detect_attack
+from detector import detect_attack, detect_scanner
+
 
 app = Flask(__name__)
 
@@ -21,14 +22,17 @@ with open("access.log", "r") as f:
 
             if attack:
 
-                ip=parsed["ip"]
+                ip = parsed["ip"]
+                scanner = detect_scanner(parsed["user_agent"])
 
                 if ip in ip_count:
                     ip_count[ip]+=1
                 else:
                     ip_count[ip]=1
 
-                parsed["attack"] = attack
+                parsed["attack_type"] = attack["type"]
+                parsed["risk_level"] = attack["level"]
+                parsed["scanner"] = scanner
 
                 logs.append(parsed)
 

@@ -17,7 +17,9 @@
     <th>URL</th>
     <th>Status</th>
     <th>User-Agent</th>
-    <th>Attack</th>
+    <th>Attack Type</th>
+    <th>Risk Level</th>
+    <th>Scanner</th>
 </tr>
 
 {% for log in logs %}
@@ -28,7 +30,9 @@
     <td>{{ log.url }}</td>
     <td>{{ log.status }}</td>
     <td>{{ log.user_agent }}</td>
-    <td>{{ log.attack }}</td>
+    <td>{{ log.attack_type }}</td>
+    <td>{{ log.risk_level }}</td>
+    <td>{{ log.scanner }}</td>
 </tr>
 
 {% endfor %}
