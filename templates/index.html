@@ -1,59 +1,146 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Log Analyzer</title>
+
+    <title>Security Log Analyzer</title>
+
+    <link href="/static/bootstrap-5.3.8/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
 
-    <h1>攻击日志</h1>
+<body class="bg-light">
 
-    <table border="1">
+<nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+        <span class="navbar-brand mb-0 h1">
+            Security Log Analyzer
+        </span>
+    </div>
+</nav>
 
-<tr>
-    <th>IP</th>
-    <th>Method</th>
-    <th>URL</th>
-    <th>Status</th>
-    <th>User-Agent</th>
-    <th>Attack Type</th>
-    <th>Risk Level</th>
-    <th>Scanner</th>
-</tr>
+<div class="container mt-4">
 
-{% for log in logs %}
+    <div class="row">
 
-<tr>
-    <td>{{ log.ip }}</td>
-    <td>{{ log.method }}</td>
-    <td>{{ log.url }}</td>
-    <td>{{ log.status }}</td>
-    <td>{{ log.user_agent }}</td>
-    <td>{{ log.attack_type }}</td>
-    <td>{{ log.risk_level }}</td>
-    <td>{{ log.scanner }}</td>
-</tr>
+        <div class="col-md-3">
+            <div class="card text-bg-primary mb-3">
 
-{% endfor %}
+                <div class="card-body">
+                    <h5 class="card-title">Total Attacks</h5>
 
-</table>
-    
-<h2>攻击 IP 统计 </h2>
+                    <p class="card-text fs-3">
+                        {{ total_attacks }}
+                    </p>
+                </div>
 
-<table border="1">
-    <tr>
-        <th>IP</th>
-        <th>攻击次数</th>
-    </tr>
+            </div>
+        </div>
 
-    {% for ip, count in ip_count.items() %}
-     
-    <tr>
-        <td>{{ ip }}</td>
-        <td>{{ count }}</td>
-    </tr>
-    {% endfor %}
-</table>
+        <div class="col-md-3">
+            <div class="card text-bg-danger mb-3">
+
+                <div class="card-body">
+                    <h5 class="card-title">High Risk</h5>
+
+                    <p class="card-text fs-3">
+                        {{ high_risk_count }}
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-bg-warning mb-3">
+
+                <div class="card-body">
+                    <h5 class="card-title">Scanners</h5>
+
+                    <p class="card-text fs-3">
+                        {{ scanner_count }}
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card text-bg-success mb-3">
+
+                <div class="card-body">
+                    <h5 class="card-title">Attack IPs</h5>
+
+                    <p class="card-text fs-3">
+                        {{ attack_ip_count }}
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <h3 class="mt-4">Attack Logs</h3>
+
+    <table class="table table-bordered table-hover">
+
+        <thead class="table-dark">
+
+        <tr>
+            <th>IP</th>
+            <th>Method</th>
+            <th>URL</th>
+            <th>Attack Type</th>
+            <th>Risk</th>
+            <th>Scanner</th>
+        </tr>
+
+        </thead>
+
+        <tbody>
+
+        {% for log in logs %}
+
+        <tr>
+
+            <td>{{ log.ip }}</td>
+
+            <td>{{ log.method }}</td>
+
+            <td>{{ log.url }}</td>
+
+            <td>{{ log.attack_type }}</td>
+
+            <td>
+
+                {% if log.risk_level == "High" %}
+
+                    <span class="badge bg-danger">
+                        {{ log.risk_level }}
+                    </span>
+
+                {% else %}
+
+                    <span class="badge bg-warning text-dark">
+                        {{ log.risk_level }}
+                    </span>
+
+                {% endif %}
+
+            </td>
+
+            <td>{{ log.scanner }}</td>
+
+        </tr>
+
+        {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
 </body>
 </html>

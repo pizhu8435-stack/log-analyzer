@@ -10,6 +10,10 @@ logs = []
 
 ip_count= {}
 
+high_risk_count = 0
+
+scanner_count = 0
+
 with open("access.log", "r") as f:
 
     for line in f:
@@ -25,6 +29,8 @@ with open("access.log", "r") as f:
                 ip = parsed["ip"]
                 scanner = detect_scanner(parsed["user_agent"])
 
+                if scanner:
+                    scanner_count += 1
                 if ip in ip_count:
                     ip_count[ip]+=1
                 else:
@@ -32,6 +38,8 @@ with open("access.log", "r") as f:
 
                 parsed["attack_type"] = attack["type"]
                 parsed["risk_level"] = attack["level"]
+                if attack["level"] == "High":
+                    high_risk_count += 1
                 parsed["scanner"] = scanner
 
                 logs.append(parsed)
@@ -39,7 +47,14 @@ with open("access.log", "r") as f:
 @app.route("/")
 def index():
 
-    return render_template("index.html", logs=logs,ip_count=ip_count)
+    return render_template("index.html", 
+        logs=logs, 
+        ip_count=ip_count, 
+        total_attacks = len(logs),
+        high_risk_count = high_risk_count, 
+        scanner_count = scanner_count, 
+        attack_ip_count = len(ip_count)
+    )
 
 if __name__ == "__main__":
     app.run(debug=True)
