@@ -3,6 +3,8 @@ from flask import Flask, render_template
 from parser import parse_log
 from detector import detect_attack, detect_scanner
 
+import os
+
 
 app = Flask(__name__)
 
@@ -17,7 +19,12 @@ def index():
 
     scanner_count = 0
 
-    with open("/var/log/nginx/access.log", "r") as f:
+    LOG_FILE = os.getenv(
+         "LOG_FILE",
+         "/var/log/nginx/access.log"
+)
+
+with open(LOG_FILE, "r") as f:
 
         for line in f:
 
